@@ -1,5 +1,6 @@
 <template>
-    <div>This is home</div>
+    <!-- side nav -->
+    Homess
 </template>
 
 <script setup></script>
