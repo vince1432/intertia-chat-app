@@ -6,9 +6,6 @@ module.exports = {
         "./resources/**/*.vue",
         "./node_modules/flowbite/**/*.js",
     ],
-    theme: {
-        extend: {},
-    },
     plugins: [require("flowbite/plugin")],
     darkMode: "class",
     theme: {
@@ -27,6 +24,9 @@ module.exports = {
                     900: "#1e3a8a",
                     950: "#172554",
                 },
+            },
+            rotate: {
+                270: "270deg",
             },
         },
         fontFamily: {

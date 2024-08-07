@@ -1,4 +1,5 @@
 <template>
+    <!-- open button -->
     <button
         data-drawer-target="default-sidebar"
         data-drawer-toggle="default-sidebar"
@@ -21,7 +22,7 @@
             ></path>
         </svg>
     </button>
-
+    <!-- Nav content -->
     <aside
         id="default-sidebar"
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
@@ -197,7 +198,7 @@
         </div>
     </aside>
 
-    <div class="p-4 sm:ml-64">
+    <div class="sm:ml-64">
         <slot />
     </div>
 </template>
