@@ -4,7 +4,7 @@
         <ChatHeader />
         <!-- <hr /> -->
         <!-- Content -->
-        <div class="messages column overflow-y-auto text-nowrap border-y-2">
+        <div class="messages column overflow-y-auto text-nowrap border-t-2">
             <ChatMessage
                 v-for="message in messages"
                 class="message flex flex-col"
@@ -24,8 +24,9 @@
 import ChatBox from "@components/ChatBox.vue";
 import ChatHeader from "@components/ChatHeader.vue";
 import ChatMessage from "@components/ChatMessage.vue";
+import { reactive } from "vue";
 
-const messages = [
+const messages = reactive([
     "message 1",
     "message 2",
     "message 3",
@@ -39,7 +40,7 @@ const messages = [
     "message 11",
     "message 12",
     "message 13",
-];
+]);
 </script>
 
 <style lang="scss" scoped>
