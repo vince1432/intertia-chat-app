@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('group_message', function (Blueprint $table) {
-            $table->foreignId('group_id')->constrained();
-            $table->foreignId('message_id')->constrained();
+        Schema::create('messagable', function (Blueprint $table) {
+            $table->foreignId('message_id');
+            $table->morphs('messagable');
         });
     }
 
@@ -22,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('group_message');
+        Schema::dropIfExists('messagable');
     }
 };

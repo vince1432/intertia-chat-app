@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,10 @@ class MessageFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'message' => fake()->paragraph(3),
+            'sender_id' => User::all()->random()->id,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ];
     }
 }
