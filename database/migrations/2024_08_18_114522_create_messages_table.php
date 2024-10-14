@@ -18,6 +18,7 @@ return new class extends Migration
                 table: 'users',
                 indexName: 'message_user_id'
             );
+            $table->morphs('messageable');
             $table->timestamps();
         });
     }

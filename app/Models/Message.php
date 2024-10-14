@@ -4,29 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Message extends Model
 {
     use HasFactory;
 
     /**
-     * message that sent to a user
+     * owner of the message
      *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
      */
-    public function user(): MorphToMany
+    public function messageable(): MorphTo
     {
-        return $this->morphedByMany(User::class, 'messagable');
-    }
-
-    /**
-     * message that sent to a group
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function group(): MorphToMany
-    {
-        return $this->morphedByMany(Group::class, 'messagable');
+        return $this->morphTo();
     }
 }
