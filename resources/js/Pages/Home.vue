@@ -10,6 +10,7 @@
                 class="message flex flex-col"
                 :message="message"
                 name="John Doe"
+                :key="message"
             />
             <!-- <div v-for="message in message">
                 {{ message }}
