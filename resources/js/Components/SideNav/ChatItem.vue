@@ -37,6 +37,7 @@
 defineProps({
   chat: Object,
 });
+
 import useChatDate from "@composables/useChatDate.js";
 const { timeDisplay } = useChatDate();
 </script>

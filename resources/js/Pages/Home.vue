@@ -1,57 +1,54 @@
 <template>
-    <div class="container h-full">
-        <!-- Head -->
-        <ChatHeader />
-        <!-- <hr /> -->
-        <!-- Content -->
-        <div class="messages column overflow-y-auto text-nowrap border-t-2">
-            <ChatMessage
-                v-for="message in messages"
-                class="message flex flex-col"
-                :message="message"
-                name="John Doe"
-                :key="message"
-            />
-            <!-- <div v-for="message in message">
-                {{ message }}
-            </div> -->
-        </div>
-        <!-- Chat Box -->
-        <ChatBox class="footer" />
+  <div class="container h-full w-full">
+    <!-- Head -->
+    <ChatHeader />
+    <!-- <hr /> -->
+    <!-- Content -->
+    <div class="messages column overflow-y-auto text-nowrap border-t-2">
+      <ChatMessage
+        v-for="message in messages"
+        class="message flex flex-col"
+        :message="message.message"
+        :name="message.sender.full_name"
+        :key="message.id"
+      />
     </div>
+    <!-- Chat Box -->
+    <ChatBox class="footer" />
+  </div>
 </template>
 
 <script setup>
 import ChatBox from "@components/ChatBox.vue";
 import ChatHeader from "@components/ChatHeader.vue";
 import ChatMessage from "@components/ChatMessage.vue";
-import { reactive } from "vue";
+import { usePage } from "@inertiajs/vue3";
+import { computed, ref, watch } from "vue";
 
-const messages = reactive([
-    "message 1",
-    "message 2",
-    "message 3",
-    "message 4",
-    "message 5",
-    "message 6",
-    "message 7",
-    "message 8",
-    "message 9",
-    "message 10",
-    "message 11",
-    "message 12",
-    "message 13",
-]);
+const page = usePage();
+
+const messages = ref([]);
+const propMessages = computed(() => {
+  return page.props.data.messages;
+});
+
+watch(
+  propMessages,
+  async (newVal, oldVal) => {
+    messages.value = newVal;
+  },
+  { deep: true }
+);
 </script>
 
 <style lang="scss" scoped>
 .container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 .column {
-    flex-grow: 1;
+  flex-grow: 1;
 }
 </style>

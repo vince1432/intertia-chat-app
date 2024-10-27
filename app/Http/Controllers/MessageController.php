@@ -2,20 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Group;
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Query\Builder;
+use Inertia\Response;
 
 class MessageController extends Controller
 {
-	public function chats()
+	/**
+	 * Chat data for side nav
+	 *
+	 * @return \Inertia\ResponseFactory|\Inertia\Response
+	 */
+	public function chats(): Response
 	{
 		// user messages
+		// TODO - add auth, optimize
 		$user_id = 1;
 		$user_messages = [];
-		$group_messages = [];
 
 		$user_messages = User::select('id', 'first_name', 'last_name')
 			->with([
@@ -60,6 +64,41 @@ class MessageController extends Controller
 			"data" => [
 				"user_messages" => $user_messages,
 				"groups" => $user->groups,
+			]
+		]);
+	}
+
+	/**
+	 * Chat data for side nav
+	 *
+	 * @return \Inertia\ResponseFactory|\Inertia\Response
+	 */
+	public function messages(): Response
+	{
+		$validated = request()->validate([
+			'id' => 'required|integer',
+			'type' => 'required|string',
+		]);
+		// TODO - add auth
+		$user_id = 1;
+		$messages = [];
+		$messages = Message::select('id', 'message', 'sender_id', 'messageable_type', 'messageable_id', 'created_at')
+			// ->with('sender:id,first_name,last_name')
+			->with(['sender' => function ($query) {
+				$query->select('id', 'first_name', 'last_name');
+			}])
+			->where(function ($query) use ($user_id, $validated) {
+				$query->where('sender_id', $user_id)->orWhere('sender_id', $validated['id']);
+			})
+			->where(function ($query) use ($user_id, $validated) {
+				$query->where('messageable_id', $user_id)->orWhere('messageable_id', $validated['id']);
+			})
+			->where('messageable_type', User::class)
+			->get();
+
+		return inertia('Home', [
+			"data" => [
+				"messages" => $messages,
 			]
 		]);
 	}

@@ -76,7 +76,12 @@
           v-if="chats.length"
           class="max-w-md divide-y divide-gray-200 dark:divide-gray-700"
         >
-          <ChatItem v-for="chat in chats" :key="chat.id" :chat="chat" />
+          <ChatItem
+            v-for="chat in chats"
+            :key="chat.id"
+            :chat="chat"
+            @click="displayMessage(chat.chat_id, 'chat')"
+          />
         </ul>
         <div v-else class="flex justify-center">
           <span class="font-bold">No chat history</span>
@@ -93,7 +98,12 @@
           v-if="groups.length"
           class="max-w-md divide-y divide-gray-200 dark:divide-gray-700"
         >
-          <GroupItem v-for="group in groups" :key="group.id" :group="group" />
+          <GroupItem
+            v-for="group in groups"
+            :key="group.id"
+            :group="group"
+            @click="displayMessage(group.id, 'group')"
+          />
         </ul>
         <div v-else class="flex justify-center">
           <span class="font-bold">No chat history</span>
@@ -116,6 +126,11 @@ const props = defineProps({
   chats: Array,
   groups: Array,
 });
+
+const emit = defineEmits(["update:chats"]);
+const displayMessage = (id, type) => {
+  emit("update:chats", { id, type });
+};
 </script>
 
 <style lang="scss" scoped></style>

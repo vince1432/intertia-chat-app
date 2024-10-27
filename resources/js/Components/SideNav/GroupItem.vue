@@ -1,6 +1,6 @@
 <template>
   <div>
-    <li>
+    <li class="hover:bg-violet-200 cursor-pointer">
       <div class="flex items-center space-x-4 rtl:space-x-reverse">
         <div class="flex-shrink-0">
           <svg
