@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\MessageTypes;
+use App\Models\Group;
 use App\Models\Message;
 use App\Models\User;
-use Illuminate\Database\Query\Builder;
+use Illuminate\Validation\Rule;
 use Inertia\Response;
 
 class MessageController extends Controller
@@ -77,27 +79,52 @@ class MessageController extends Controller
 	{
 		$validated = request()->validate([
 			'id' => 'required|integer',
-			'type' => 'required|string',
+			'type' => ['required', 'string', Rule::enum(MessageTypes::class)],
 		]);
+
 		// TODO - add auth
 		$user_id = 1;
 		$messages = [];
-		$messages = Message::select('id', 'message', 'sender_id', 'messageable_type', 'messageable_id', 'created_at')
-			// ->with('sender:id,first_name,last_name')
-			->with(['sender' => function ($query) {
-				$query->select('id', 'first_name', 'last_name');
-			}])
-			->where(function ($query) use ($user_id, $validated) {
-				$query->where('sender_id', $user_id)->orWhere('sender_id', $validated['id']);
-			})
-			->where(function ($query) use ($user_id, $validated) {
-				$query->where('messageable_id', $user_id)->orWhere('messageable_id', $validated['id']);
-			})
-			->where('messageable_type', User::class)
-			->get();
+		$chat_header = [];
+		if ($validated['type'] === MessageTypes::CHAT->value) {
+			$messages = Message::select('id', 'message', 'sender_id', 'messageable_type', 'messageable_id', 'created_at')
+				// ->with('sender:id,first_name,last_name')
+				->with(['sender' => function ($query) {
+					$query->select('id', 'first_name', 'last_name');
+				}])
+				->where(function ($query) use ($user_id, $validated) {
+					$query->where('sender_id', $user_id)->orWhere('sender_id', $validated['id']);
+				})
+				->where(function ($query) use ($user_id, $validated) {
+					$query->where('messageable_id', $user_id)->orWhere('messageable_id', $validated['id']);
+				})
+				->where('messageable_type', User::class)
+				->get();
+
+			$user = User::select('id', 'first_name', 'last_name')->where('id', $validated['id'])->first();
+			$chat_header = [
+				"id" => $user->id,
+				"name" => $user->full_name,
+			];
+		} else if ($validated['type'] === MessageTypes::GROUP->value) {
+			$group = Group::select('id', 'name')
+				->with(['messages' => function ($query) {
+					$query->select('id', 'message', 'messageable_id', 'messageable_type', 'sender_id', 'created_at')
+						->with('sender:id,first_name,last_name')
+						->get();
+				}])
+				->where('id', $validated['id'])
+				->first();
+			$messages = $group->messages;
+			$chat_header = [
+				"id" => $group->id,
+				"name" => $group->name,
+			];
+		}
 
 		return inertia('Home', [
 			"data" => [
+				"header" => $chat_header,
 				"messages" => $messages,
 			]
 		]);

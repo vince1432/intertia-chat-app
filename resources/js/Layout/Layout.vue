@@ -1,12 +1,15 @@
 <template>
   <SideNav :chats="chats" :groups="groups" @update:chats="updateMessages">
-    <slot />
+    <slot>
+      No Message
+    </slot>
   </SideNav>
 </template>
 
 <script setup>
 import SideNav from "@components/SideNav/SideNav.vue";
 import { router, usePage } from "@inertiajs/vue3";
+import { toast } from "vue3-toastify";
 
 const page = usePage();
 const chats = page.props.data.user_messages;
@@ -23,6 +26,12 @@ const updateMessages = ({ id, type }) => {
     {
       preserveState: true,
       preserveScroll: true,
+      onError: (errors) => {
+        for (var error in errors) {
+          if (Object.prototype.hasOwnProperty.call(errors, error))
+            toast.error(errors[error]);
+        }
+      },
     }
   );
 };

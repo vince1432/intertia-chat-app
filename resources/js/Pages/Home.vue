@@ -1,10 +1,13 @@
 <template>
   <div class="container h-full w-full">
     <!-- Head -->
-    <ChatHeader />
+    <ChatHeader :chatName="messageHeader.name" />
     <!-- <hr /> -->
     <!-- Content -->
-    <div class="messages column overflow-y-auto text-nowrap border-t-2">
+    <div
+      v-if="messages.length"
+      class="messages column overflow-y-auto text-nowrap border-t-2"
+    >
       <ChatMessage
         v-for="message in messages"
         class="message flex flex-col"
@@ -12,6 +15,9 @@
         :name="message.sender.full_name"
         :key="message.id"
       />
+    </div>
+    <div v-else class="flex justify-center grow">
+      <span class="self-center">No messages</span>
     </div>
     <!-- Chat Box -->
     <ChatBox class="footer" />
@@ -28,14 +34,16 @@ import { computed, ref, watch } from "vue";
 const page = usePage();
 
 const messages = ref([]);
-const propMessages = computed(() => {
-  return page.props.data.messages;
+const messageHeader = ref({});
+const propData = computed(() => {
+  return page.props.data;
 });
 
 watch(
-  propMessages,
+  propData,
   async (newVal, oldVal) => {
-    messages.value = newVal;
+    messages.value = newVal.messages;
+    messageHeader.value = newVal.header;
   },
   { deep: true }
 );

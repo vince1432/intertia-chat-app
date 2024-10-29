@@ -80,7 +80,7 @@
             v-for="chat in chats"
             :key="chat.id"
             :chat="chat"
-            @click="displayMessage(chat.chat_id, 'chat')"
+            @click="displayMessage(chat.chat_id, 'CHAT')"
           />
         </ul>
         <div v-else class="flex justify-center">
@@ -102,7 +102,7 @@
             v-for="group in groups"
             :key="group.id"
             :group="group"
-            @click="displayMessage(group.id, 'group')"
+            @click="displayMessage(group.id, 'GROUP')"
           />
         </ul>
         <div v-else class="flex justify-center">
