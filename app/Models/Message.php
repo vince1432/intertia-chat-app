@@ -28,6 +28,16 @@ class Message extends Model
 	 */
 	public function sender(): BelongsTo
 	{
-		return $this->belongsTo(User::class, 'sender_id');
+		return $this->belongsTo(User::class, 'sender_id')->select('id', 'first_name', 'last_name');
+	}
+
+	public function scopeIsChatMessage($query)
+	{
+		return $query->where('messageable_type', User::class);
+	}
+
+	public function scopeIsGroupMessage($query)
+	{
+		return $query->where('messageable_type', Group::class);
 	}
 }
