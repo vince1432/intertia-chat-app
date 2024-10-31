@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\MessageTypes;
+use App\Http\Requests\MessagesRequest;
 use App\Models\Group;
 use App\Models\Message;
 use App\Models\User;
@@ -44,17 +45,9 @@ class MessageController extends Controller
 		]);
 	}
 
-	/**
-	 * Chat data for side nav
-	 *
-	 * @return \Inertia\ResponseFactory|\Inertia\Response
-	 */
-	public function messages(): Response
+	public function messages(MessagesRequest $request): Response
 	{
-		$validated = request()->validate([
-			'id' => 'required|integer',
-			'type' => ['required', 'string', Rule::enum(MessageTypes::class)],
-		]);
+		$validated = $request->validated();
 
 		// TODO - add auth
 		$user_id = 1;
