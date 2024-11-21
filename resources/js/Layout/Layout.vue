@@ -1,8 +1,6 @@
 <template>
   <SideNav :chats="chats" :groups="groups" @update:chats="updateMessages">
-    <slot>
-      No Message
-    </slot>
+    <slot> No Message </slot>
   </SideNav>
 </template>
 
@@ -26,6 +24,8 @@ const updateMessages = ({ id, type }) => {
     {
       preserveState: true,
       preserveScroll: true,
+      preserveUrl: true,
+      only: ["data"],
       onError: (errors) => {
         for (var error in errors) {
           if (Object.prototype.hasOwnProperty.call(errors, error))

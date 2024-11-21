@@ -120,7 +120,6 @@
 <script setup>
 import ChatItem from "@components/SideNav/ChatItem.vue";
 import GroupItem from "@components/SideNav/GroupItem.vue";
-import { defineProps } from "vue";
 
 const props = defineProps({
   chats: Array,

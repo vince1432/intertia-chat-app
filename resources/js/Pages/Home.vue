@@ -20,7 +20,11 @@
       <span class="self-center">No messages</span>
     </div>
     <!-- Chat Box -->
-    <ChatBox class="footer" />
+    <ChatBox
+      class="footer"
+      :selected="messageHeader"
+      @add:message="addNewMessage"
+    />
   </div>
 </template>
 
@@ -35,18 +39,31 @@ const page = usePage();
 
 const messages = ref([]);
 const messageHeader = ref({});
+
 const propData = computed(() => {
   return page.props.data;
 });
 
 watch(
   propData,
-  async (newVal, oldVal) => {
-    messages.value = newVal.messages;
-    messageHeader.value = newVal.header;
+  async (newVal) => {
+    if (newVal.messages) {
+      messages.value = newVal.messages;
+    }
+    if (newVal.header) {
+      messageHeader.value = newVal.header;
+    }
   },
   { deep: true }
 );
+
+const addNewMessage = (message) => {
+  console.log(messages.value);
+
+  messages.value.push(message);
+  console.log(messages.value);
+  console.log(message);
+};
 </script>
 
 <style lang="scss" scoped>

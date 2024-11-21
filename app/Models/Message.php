@@ -11,6 +11,7 @@ class Message extends Model
 {
 	use HasFactory;
 
+	protected $guarded = [];
 	/**
 	 * owner of the message
 	 *

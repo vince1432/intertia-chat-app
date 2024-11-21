@@ -40,10 +40,12 @@
 </template>
 
 <script setup>
+import useChatDate from "@composables/useChatDate.js";
+
 defineProps({
   group: Object,
 });
-import useChatDate from "@composables/useChatDate.js";
+
 const { timeDisplay } = useChatDate();
 </script>
 

@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Enums\MessageTypes;
 use App\Http\Requests\MessagesRequest;
-use App\Models\Group;
-use App\Models\Message;
-use App\Models\User;
+use App\Http\Requests\SendMessageRequest;
 use App\Services\MessageService;
 use App\Services\UserService;
-use Illuminate\Validation\Rule;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 use Inertia\Response;
 
 class MessageController extends Controller
@@ -63,5 +63,20 @@ class MessageController extends Controller
 				"messages" => $messages["messages"],
 			]
 		]);
+	}
+
+	public function sendMessage(SendMessageRequest $validated)
+	{
+		$message = $this->messageService->send($validated["send_to"], $validated["type"], $validated["message"]);
+		// add extra data
+		$message->load('sender');
+		$message->sender->append('full_name');
+
+		return inertia("Home", [
+			"data" => ["message" => $message]
+		]);
+		// return to_route("messages", [
+		// 	"data" => ["message" => $message]
+		// ]);
 	}
 }
