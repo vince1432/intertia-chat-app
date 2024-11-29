@@ -24,7 +24,7 @@
   <!-- Nav content -->
   <aside
     id="default-sidebar"
-    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+    class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0 overflow-auto flex flex-col justify-between"
     aria-label="Sidebar"
   >
     <div class="border-b border-gray-200 dark:border-gray-700">
@@ -64,27 +64,32 @@
         </li>
       </ul>
     </div>
-    <div id="default-styled-tab-content">
+    <div id="default-styled-tab-content" class="h-full overflow-auto">
       <!-- chats -->
       <div
-        class="hidden rounded-lg bg-gray-50 dark:bg-gray-800"
+        class="hidden rounded-lg bg-gray-50 dark:bg-gray-800 h-full"
         id="styled-profile"
         role="tabpanel"
         aria-labelledby="profile-tab"
       >
-        <ul
-          v-if="chats.length"
-          class="max-w-md divide-y divide-gray-200 dark:divide-gray-700"
-        >
-          <ChatItem
-            v-for="chat in chats"
-            :key="chat.id"
-            :chat="chat"
-            @click="displayMessage(chat.chat_id, 'CHAT')"
-          />
-        </ul>
-        <div v-else class="flex justify-center">
-          <span class="font-bold">No chat history</span>
+        <div class="flex flex-col justify-between h-full">
+          <!-- Chat items -->
+          <div>
+            <ul
+              v-if="chats.length"
+              class="max-w-md divide-y divide-gray-200 dark:divide-gray-700 flex flex-col"
+            >
+              <ChatItem
+                v-for="chat in chats"
+                :key="chat.id"
+                :chat="chat"
+                @click="displayMessage(chat.chat_id, 'CHAT')"
+              />
+            </ul>
+            <div v-else class="flex justify-center">
+              <span class="font-bold">No chat history</span>
+            </div>
+          </div>
         </div>
       </div>
       <div
@@ -110,8 +115,31 @@
         </div>
       </div>
     </div>
-  </aside>
 
+    <!-- Settings -->
+    <div>
+      <div
+        class="max-w-sm px-4 py-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 font-semibold flex"
+      >
+        <svg
+          class="w-6 h-6 text-gray-800 dark:text-white"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke="currentColor"
+            stroke-width="2"
+            d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+          />
+        </svg>
+        Users
+      </div>
+    </div>
+  </aside>
   <div class="sm:ml-64">
     <slot />
   </div>

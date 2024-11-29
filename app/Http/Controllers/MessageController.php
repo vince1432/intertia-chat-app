@@ -37,7 +37,7 @@ class MessageController extends Controller
 		// group messages
 		$user_groups = $this->userService->GetUserGroups($user_id);
 
-		return inertia('Home', [
+		return inertia('Messages', [
 			"data" => [
 				"user_messages" => $user_messages,
 				"groups" => $user_groups,
@@ -57,7 +57,7 @@ class MessageController extends Controller
 			$messages = $this->messageService->GroupMessages($validated['id']);
 		}
 
-		return inertia('Home', [
+		return inertia('Messages', [
 			"data" => [
 				"header" => $messages["header"],
 				"messages" => $messages["messages"],
@@ -72,11 +72,8 @@ class MessageController extends Controller
 		$message->load('sender');
 		$message->sender->append('full_name');
 
-		return inertia("Home", [
+		return inertia("Messages", [
 			"data" => ["message" => $message]
 		]);
-		// return to_route("messages", [
-		// 	"data" => ["message" => $message]
-		// ]);
 	}
 }
