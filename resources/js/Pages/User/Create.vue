@@ -121,6 +121,11 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import ManageLayout from "@layouts/ManageLayout.vue";
+defineOptions({
+  layout: ManageLayout,
+});
+</script>
 
 <style lang="scss" scoped></style>

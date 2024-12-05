@@ -15,6 +15,7 @@ export default defineConfig({
   resolve: {
     alias: {
       "ziggy-js": path.resolve("vendor/tightenco/ziggy"),
+      "@layouts": path.resolve("resources/js/Layout"),
       "@components": path.resolve("resources/js/Components"),
       "@composables": path.resolve("resources/js/Composables"),
     },

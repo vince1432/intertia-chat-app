@@ -117,28 +117,7 @@
     </div>
 
     <!-- Settings -->
-    <div>
-      <div
-        class="max-w-sm px-4 py-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 font-semibold flex"
-      >
-        <svg
-          class="w-6 h-6 text-gray-800 dark:text-white"
-          aria-hidden="true"
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke="currentColor"
-            stroke-width="2"
-            d="M7 17v1a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1a3 3 0 0 0-3-3h-4a3 3 0 0 0-3 3Zm8-9a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-          />
-        </svg>
-        Users
-      </div>
-    </div>
+    <Option />
   </aside>
   <div class="sm:ml-64">
     <slot />
@@ -148,6 +127,7 @@
 <script setup>
 import ChatItem from "@components/SideNav/ChatItem.vue";
 import GroupItem from "@components/SideNav/GroupItem.vue";
+import Option from "@components/SideNav/Option.vue";
 
 const props = defineProps({
   chats: Array,
