@@ -109,7 +109,7 @@
             <!-- number pages -->
             <li v-for="(link, index) in visiblePages" :key="index">
               <Link
-                :href="link.url"
+                :href="finalLink(link.url)"
                 :only="['data', 'pagination']"
                 class="flex items-center justify-center px-4 h-10 leading-tight"
                 :class="{
@@ -213,7 +213,7 @@ const props = defineProps({
     type: Number,
     default: 1,
   },
-  perPage: {
+  per_page: {
     type: Number,
     default: 10,
   },
@@ -241,6 +241,10 @@ const props = defineProps({
     type: Number,
     default: 0,
   },
+  query_string: {
+    type: String,
+    default: "",
+  },
 });
 
 const visiblePages = ref([]);
@@ -249,7 +253,7 @@ const showTag = ref({ from: 1, to: 2, total: 2 });
 const pagination = ref({
   total: props.total,
   currentPage: props.currentPage,
-  perPage: props.perPage ?? 10,
+  perPage: props.per_page ?? 10,
   links: props.links,
   next_page: props.next_page ?? "#",
   prev_page: props.prev_page ?? "#",
@@ -311,8 +315,6 @@ const shortenPagination = () => {
   }
 };
 
-console.log(pagination.value.perPage);
-
 const calcuTag = () => {
   let from = 1;
   let to = 2;
@@ -322,6 +324,8 @@ const calcuTag = () => {
     paginationData.perPage +
     1;
   to = paginationData.perPage * paginationData.currentPage;
+
+  // console.log(paginationData.total, from, to, 1234214);
 
   // adjust to
   to = to > paginationData.total ? paginationData.total : to;
@@ -333,7 +337,10 @@ const calcuTag = () => {
 
 const updatePerPage = () => {
   emit("update:data", pagination.value.perPage);
-  console.log(123);
+};
+
+const finalLink = (link) => {
+  return link + props.query_string;
 };
 </script>
 

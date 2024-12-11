@@ -50,8 +50,8 @@ class User extends Authenticatable
 		return [
 			'email_verified_at' => 'datetime',
 			'password' => 'hashed',
-			'created_at' => 'datetime:Y-m-d H:i:s',
-			'updated_at' => 'datetime:Y-m-d H:i:s',
+			'created_at' => 'datetime:M d, Y H:i:s',
+			'updated_at' => 'datetime:M d, Y H:i:s',
 		];
 	}
 
@@ -105,7 +105,7 @@ class User extends Authenticatable
 	 */
 	public function groups(): BelongsToMany
 	{
-		return $this->belongsToMany(Group::class)->select('id','name');
+		return $this->belongsToMany(Group::class)->select('id', 'name');
 	}
 
 	public function messagesFromUser(): BelongsToMany

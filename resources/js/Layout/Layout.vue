@@ -15,7 +15,6 @@ const groups = page.props.data.groups;
 
 const updateMessages = ({ id, type }) => {
   // TODO - preserve displayed
-  console.log(id, type);
   router.remember({ id, type }, "display-message");
   page.props.data.messages = [];
   router.post(

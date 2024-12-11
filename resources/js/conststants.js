@@ -3,6 +3,7 @@ export const MAX_VISIBLE_PAGE = 2;
 
 // pagination max item select
 export const ITEMS_PER_PAGE_OPTION = [
+  { label: 1, value: 1 },
   { label: 10, value: 10 },
   { label: 20, value: 20 },
   { label: 30, value: 30 },

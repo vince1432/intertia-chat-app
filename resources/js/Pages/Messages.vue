@@ -58,11 +58,7 @@ watch(
 );
 
 const addNewMessage = (message) => {
-  console.log(messages.value);
-
   messages.value.push(message);
-  console.log(messages.value);
-  console.log(message);
 };
 </script>
 
