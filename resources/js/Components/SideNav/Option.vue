@@ -53,11 +53,9 @@
 </template>
 
 <script setup>
-import { router } from "@inertiajs/vue3";
+import useVisit from "@composables/useVisit";
 
-const goTo = (url) => {
-  router.visit(url, { method: "get" });
-};
+const { goTo } = useVisit();
 </script>
 
 <style lang="scss" scoped></style>

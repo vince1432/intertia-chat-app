@@ -50,6 +50,7 @@
             <button
               type="button"
               class="text-white bg-green-400 hover:bg-green-300 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 flex gap-3"
+              @click="goTo(route('users.create'))"
             >
               <svg
                 class="w-5 h-5"
@@ -124,7 +125,7 @@
       <Pagination
         :total="pagination.total"
         :current-page="pagination.current_page"
-        :per_page="pagination.per_page"
+        :per_page="pagination.per_page ?? 10"
         :links="pagination.links"
         :next_page="pagination.next_page_url"
         :prev_page="pagination.prev_page_url"
@@ -140,12 +141,14 @@
 
 <script setup>
 import Pagination from "@components/Pagination.vue";
+import useVisit from "@composables/useVisit";
 import { router, usePage } from "@inertiajs/vue3";
 import ManageLayout from "@layouts/ManageLayout.vue";
 import { debounce } from "lodash";
 import { onMounted, ref, watch } from "vue";
 
 const page = usePage();
+const { goTo } = useVisit();
 
 const search = ref("");
 const old_search = ref("");
@@ -162,10 +165,6 @@ onMounted(() => {
     search.value = params.get("search");
     old_search.value = params.get("search");
   }
-
-  // if (params.get("per_page")) {
-  //   pagination.value.per_page = params.get("per_page");
-  // }
 });
 // search
 watch(

@@ -12,6 +12,39 @@ class UserService
 		return $this;
 	}
 
+	public function List(): array
+	{
+		$per_page = request('per_page') ?? 10;
+		$search = request('search') ?? NULL;
+
+		$users =  User::select('id', 'first_name', 'last_name', 'email', 'created_at');
+
+		if ($search) {
+			$users->where(function ($query) use ($search) {
+				$query->where('id', 'like', "%{$search}%")
+					->orWhere('first_name', 'like', "%{$search}%")
+					->orWhere('last_name', 'like', "%{$search}%")
+					->orWhere('email', 'like', "%{$search}%");
+			});
+		}
+
+		$users = $users->paginate($per_page)
+			->withQueryString()
+			->toArray();
+
+		$data = $users["data"];
+		$pagination = data_forget($users, "data");
+
+		// remove next and previous link
+		array_shift($pagination["links"]);
+		array_pop($pagination["links"]);
+
+		return [
+			"data" => $data,
+			"pagination" => $pagination,
+		];
+	}
+
 	public function GetById(int $userId): User
 	{
 		return User::select('id', 'first_name', 'last_name')->where('id', $userId)->first();

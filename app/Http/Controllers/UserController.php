@@ -3,40 +3,47 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
-	public function index()
+	private UserService $userService;
+
+	public function __construct(UserService $userService)
 	{
-		$per_page = (int)request('per_page') ?? 5;
-		$search = request('search') ?? NULL;
+		$this->userService = $userService;
+	}
 
-		$users =  User::select('id', 'first_name', 'last_name', 'email', 'created_at');
+	public function index(): \Inertia\ResponseFactory|\Inertia\Response
+	{
+		$users = $this->userService->List();
 
-		if ($search) {
-			$users->where(function ($query) use ($search) {
-				$query->where('id', 'like', "%{$search}%")
-					->orWhere('first_name', 'like', "%{$search}%")
-					->orWhere('last_name', 'like', "%{$search}%")
-					->orWhere('email', 'like', "%{$search}%");
-			});
-		}
+		return inertia('User/Users', $users);
+	}
 
-		$users = $users->paginate($per_page)
-			->withQueryString()
-			->toArray();
+	public function create(): \Inertia\ResponseFactory|\Inertia\Response
+	{
+		return inertia('User/Create');
+	}
 
-		$data = $users["data"];
-		$pagination = data_forget($users, "data");
-
-		// remove next and previous link
-		array_shift($pagination["links"]);
-		array_pop($pagination["links"]);
-		// dd($pagination);
-		return inertia('User/Users', [
-			"data" => $data,
-			"pagination" => $pagination,
+	public function store(Request $request): \Illuminate\Http\RedirectResponse
+	{
+		$validated = $request->validate([
+			"first_name" => ['required', 'min:2', 'max:255'],
+			"last_name" => ['required', 'min:2', 'max:255'],
+			"email" => ['required', 'email:rfc,dns', 'unique:users,email'],
+			"password" => ['required', 'confirmed', Password::min(8)],
 		]);
+
+		User::create([
+			"first_name" => $validated["first_name"],
+			"last_name" => $validated["last_name"],
+			"email" => $validated["email"],
+			"password" => $validated["password"],
+		]);
+
+		return to_route('users.index');
 	}
 }
