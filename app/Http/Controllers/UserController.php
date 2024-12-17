@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -28,21 +29,10 @@ class UserController extends Controller
 		return inertia('User/Create');
 	}
 
-	public function store(Request $request): \Illuminate\Http\RedirectResponse
+	public function store(StoreUserRequest $request): \Illuminate\Http\RedirectResponse
 	{
-		$validated = $request->validate([
-			"first_name" => ['required', 'min:2', 'max:255'],
-			"last_name" => ['required', 'min:2', 'max:255'],
-			"email" => ['required', 'email:rfc,dns', 'unique:users,email'],
-			"password" => ['required', 'confirmed', Password::min(8)],
-		]);
-
-		User::create([
-			"first_name" => $validated["first_name"],
-			"last_name" => $validated["last_name"],
-			"email" => $validated["email"],
-			"password" => $validated["password"],
-		]);
+		$validated = $request->validated();
+		$this->userService->Create($validated);
 
 		return to_route('users.index');
 	}

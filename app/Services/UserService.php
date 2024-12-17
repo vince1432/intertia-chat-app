@@ -93,4 +93,14 @@ class UserService
 
 		return $user_messages;
 	}
+
+	public function Create(array $validated): User
+	{
+		return User::create([
+			"first_name" => $validated["first_name"],
+			"last_name" => $validated["last_name"],
+			"email" => $validated["email"],
+			"password" => $validated["password"],
+		]);
+	}
 }
