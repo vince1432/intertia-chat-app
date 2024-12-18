@@ -20,11 +20,7 @@
       <span class="self-center">No messages</span>
     </div>
     <!-- Chat Box -->
-    <ChatBox
-      class="footer"
-      :selected="messageHeader"
-      @add:message="addNewMessage"
-    />
+    <ChatBox class="footer" :selected="messageHeader" @add:message="addNewMessage" />
   </div>
 </template>
 

@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Arr;
 
 class UserService
 {
@@ -94,7 +95,7 @@ class UserService
 		return $user_messages;
 	}
 
-	public function Create(array $validated): User
+	public function Store(array $validated): User
 	{
 		return User::create([
 			"first_name" => $validated["first_name"],
@@ -102,5 +103,24 @@ class UserService
 			"email" => $validated["email"],
 			"password" => $validated["password"],
 		]);
+	}
+
+	public function Update(User $user, array $validated): bool
+	{
+		if (Arr::exists($validated, 'first_name'))
+			$user->first_name = $validated["first_name"];
+		if (Arr::exists($validated, 'last_name'))
+			$user->last_name = $validated["last_name"];
+		if (Arr::exists($validated, 'email'))
+			$user->email = $validated["email"];
+		if (Arr::exists($validated, 'password'))
+			$user->password = $validated["password"];
+
+		return $user->update();
+	}
+
+	public function Delete(User $user): bool
+	{
+		return $user->delete();
 	}
 }

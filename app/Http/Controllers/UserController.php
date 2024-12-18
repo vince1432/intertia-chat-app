@@ -32,8 +32,27 @@ class UserController extends Controller
 	public function store(StoreUserRequest $request): \Illuminate\Http\RedirectResponse
 	{
 		$validated = $request->validated();
-		$this->userService->Create($validated);
+		$this->userService->Store($validated);
 
+		return to_route('users.index');
+	}
+
+	public function edit(User $user): \Inertia\ResponseFactory|\Inertia\Response
+	{
+		return inertia('User/Edit', ["data" => ["user" =>  $user]]);
+	}
+
+	public function update(StoreUserRequest $request, User $user): \Illuminate\Http\RedirectResponse
+	{
+		$validated = $request->validated();
+		$this->userService->Update($user, $validated);
+
+		return to_route('users.index');
+	}
+
+	public function destroy(User $user): \Illuminate\Http\RedirectResponse
+	{
+		$this->userService->Delete($user);
 		return to_route('users.index');
 	}
 }
