@@ -107,13 +107,13 @@ class UserService
 
 	public function Update(User $user, array $validated): bool
 	{
-		if (Arr::exists($validated, 'first_name'))
+		if (Arr::exists($validated, 'first_name') && $validated["first_name"])
 			$user->first_name = $validated["first_name"];
-		if (Arr::exists($validated, 'last_name'))
+		if (Arr::exists($validated, 'last_name') && $validated["last_name"])
 			$user->last_name = $validated["last_name"];
-		if (Arr::exists($validated, 'email'))
+		if (Arr::exists($validated, 'email') && $validated["email"])
 			$user->email = $validated["email"];
-		if (Arr::exists($validated, 'password'))
+		if (Arr::exists($validated, 'password') && $validated["password"])
 			$user->password = $validated["password"];
 
 		return $user->update();

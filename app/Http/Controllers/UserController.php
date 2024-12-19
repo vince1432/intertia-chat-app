@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -42,9 +43,10 @@ class UserController extends Controller
 		return inertia('User/Edit', ["data" => ["user" =>  $user]]);
 	}
 
-	public function update(StoreUserRequest $request, User $user): \Illuminate\Http\RedirectResponse
+	public function update(UpdateUserRequest $request, User $user): \Illuminate\Http\RedirectResponse
 	{
 		$validated = $request->validated();
+
 		$this->userService->Update($user, $validated);
 
 		return to_route('users.index');

@@ -62,7 +62,6 @@
           id="floating_password"
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
-          required
           autocomplete="off"
         />
         <label
@@ -79,7 +78,6 @@
           id="floating_repeat_password"
           class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
           placeholder=" "
-          required
         />
         <label
           for="floating_repeat_password"
@@ -98,23 +96,30 @@
 </template>
 
 <script setup>
-import { useForm } from "@inertiajs/vue3";
+import { useForm, usePage } from "@inertiajs/vue3";
 import ManageLayout from "@layouts/ManageLayout.vue";
+import { ref } from "vue";
 import { toast } from "vue3-toastify";
 defineOptions({
   layout: ManageLayout,
 });
 
+const page = usePage();
+const user = ref(page.props.data.user);
+console.log(user.value);
+
 const form = useForm({
-  first_name: "",
-  last_name: "",
-  email: "",
+  first_name: user.value.first_name,
+  last_name: user.value.last_name,
+  email: user.value.email,
   password: "",
   password_confirmation: "",
 });
 
+console.log(form, "form");
+
 const create = () => {
-  form.post(route("users.store"), {
+  form.patch(route("users.update", user.value.id), {
     onSuccess: () => {
       toast.success("User successfully created");
     },
